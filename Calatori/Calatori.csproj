@@ -52,11 +52,26 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Mockups\MockupAutentificare.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Mockups\MockupAutentificare.Designer.cs">
+      <DependentUpon>MockupAutentificare.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Croaziere.cs" />
     <Compile Include="Models\Distante.cs" />
     <Compile Include="Models\Port.cs" />
+    <Compile Include="Panels\PnlAutentificare.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Mockups\MockupAutentificare.resx">
+      <DependentUpon>MockupAutentificare.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

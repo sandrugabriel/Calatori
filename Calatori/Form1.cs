@@ -15,6 +15,26 @@ namespace Calatori
         public Form1()
         {
             InitializeComponent();
+            this.Controls.Add(new Panels.PnlAutentificare(this));
         }
+
+        public void removepnl(string pnl)
+        {
+
+            Control control = null;
+
+            foreach (Control c in this.Controls)
+            {
+                if (c.Name.Equals(pnl))
+                {
+                    control = c;
+                }
+
+            }
+
+            this.Controls.Remove(control);
+
+        }
+
     }
 }
