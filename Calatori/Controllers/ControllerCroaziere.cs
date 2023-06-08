@@ -99,5 +99,25 @@ namespace Calatori.Controllers
             }
             return l;
         }
+
+        public List<Croaziere> getCroaziereTipDate(int tip, DateTime dateTime)
+        {
+            List<Croaziere> l = new List<Croaziere>();
+            for (int i = 0; i < croaziere.Count; i++)
+            {
+                if (croaziere[i].getTipCroaziera() == tip && croaziere[i].getDataStart() == dateTime)
+                {
+                    l.Add(croaziere[i]);
+                }
+            }
+            return l;
+
+
+
+        }
+
+
+
+
     }
 }

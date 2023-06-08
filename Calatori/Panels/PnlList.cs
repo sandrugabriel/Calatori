@@ -42,8 +42,7 @@ namespace Calatori.Panels
 
             controllerCroaziere = new ControllerCroaziere();
             controllerPorturi = new ControllerPorturi();
-            listCroaziere = controllerCroaziere.getCroaziere();
-
+            listCroaziere = croazieres;
 
             // pnlLista
             this.Size = new System.Drawing.Size(1128, 691);

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Calatori.Controllers;
+using Calatori.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,10 +14,15 @@ namespace Calatori
 {
     public partial class Form1 : Form
     {
+
+        ControllerCroaziere controllerCroaziere;
+        List<Croaziere> list;
         public Form1()
         {
             InitializeComponent();
-            this.Controls.Add(new Panels.PnlListCroaziera(this));
+            controllerCroaziere = new ControllerCroaziere();
+            list = controllerCroaziere.getCroaziere();
+            this.Controls.Add(new Panels.PnlTurist(this,list));
         }
 
         public void removepnl(string pnl)

@@ -1,4 +1,5 @@
 ﻿using Calatori.Controllers;
+using Calatori.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,14 +31,20 @@ namespace Calatori.Panels
         private System.Windows.Forms.DateTimePicker dateTimeEnd;
         private System.Windows.Forms.Button btnBack;
 
-        
+        ControllerCroaziere controllerCroaziere;
+        List<Croaziere> listCroaziere;
+        ControllerPorturi controllerPorturi;
 
-        public PnlTurist(Form1 form1) {
+        public PnlTurist(Form1 form1, List<Croaziere> croazieres) {
 
             form = form1;
             this.form.Size = new System.Drawing.Size(1421, 668);
             this.form.MinimumSize = new System.Drawing.Size(1421, 668);
             this.form.MaximumSize = new System.Drawing.Size(1421, 668);
+
+            listCroaziere = croazieres;
+            controllerCroaziere = new ControllerCroaziere();
+            controllerPorturi = new ControllerPorturi();
 
             // PnlTurist
             this.Size = new System.Drawing.Size(1421, 668);
@@ -78,7 +85,7 @@ namespace Calatori.Panels
             this.btnValidare.Size = new System.Drawing.Size(156, 57);
             this.btnValidare.TabIndex = 7;
             this.btnValidare.Text = "Validare";
-            this.btnValidare.UseVisualStyleBackColor = true;
+            this.btnValidare.Click += new EventHandler(btnValidare_Click);
             
             // dataGridView1
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -94,8 +101,15 @@ namespace Calatori.Panels
             this.dataGridView1.RowHeadersWidth = 51;
             this.dataGridView1.RowTemplate.Height = 24;
             this.dataGridView1.Size = new System.Drawing.Size(1029, 493);
-            this.dataGridView1.TabIndex = 6;
-             
+            this.dataGridView1.CellContentClick += dataGridView1_CellContentClick;
+
+            for (int i = 0; i < listCroaziere.Count; i++)
+            {
+
+                dataGridView1.Rows.Add(listCroaziere[i].getId(), getText(i), listCroaziere[i].getDataStart(), listCroaziere[i].getDataEnd(), listCroaziere[i].getPret(), listCroaziere[i].getNumPasageri());
+
+            }
+
             // cmbId
             this.cmbId.HeaderText = "Id";
             this.cmbId.MinimumWidth = 6;
@@ -145,8 +159,11 @@ namespace Calatori.Panels
             this.cmbTip.Location = new System.Drawing.Point(535, 12);
             this.cmbTip.Name = "cmbTip";
             this.cmbTip.Size = new System.Drawing.Size(207, 38);
-            this.cmbTip.TabIndex = 5;
-            
+            this.cmbTip.Items.Add("3 zile");
+            this.cmbTip.Items.Add("5 zile");
+            this.cmbTip.Items.Add("8 zile");
+            this.cmbTip.SelectedIndexChanged += new EventHandler(cmbTip_SelectedIndexChanged);
+
             // lblTip
             this.lblTip.AutoSize = true;
             this.lblTip.Font = new System.Drawing.Font("Microsoft YaHei UI Light", 15F);
@@ -188,14 +205,15 @@ namespace Calatori.Panels
             this.dateTimeStart.Location = new System.Drawing.Point(1058, 240);
             this.dateTimeStart.Name = "dateTimeStart";
             this.dateTimeStart.Size = new System.Drawing.Size(351, 31);
-            this.dateTimeStart.TabIndex = 11;
+            this.dateTimeStart.ValueChanged += new EventHandler(dateTimeStart_ValueChanged);
             
             // dateTimeEnd
             this.dateTimeEnd.Font = new System.Drawing.Font("Microsoft YaHei UI Light", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dateTimeEnd.Location = new System.Drawing.Point(1058, 331);
             this.dateTimeEnd.Name = "dateTimeEnd";
             this.dateTimeEnd.Size = new System.Drawing.Size(351, 31);
-            this.dateTimeEnd.TabIndex = 12;
+            this.dateTimeEnd.Enabled = false;
+
              
             // btnBack
             this.btnBack.Font = new System.Drawing.Font("Microsoft YaHei UI Light", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -206,6 +224,85 @@ namespace Calatori.Panels
             this.btnBack.Text = "Inchidere";
             this.btnBack.Click += new EventHandler(btnBack_Click);
              
+        }
+
+        public string getText(int k)
+        {
+            string text = null;
+            List<int> list = listCroaziere[k].getListPorturi();
+            for (int i = 0; i < list.Count; i++)
+            {
+                text += controllerPorturi.namebyId(list[i]) + ",";
+            }
+
+            return text;
+        }
+
+        private int tip = 3;
+        private string circuitul;
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
+            {
+                DataGridViewRow selectedRow = dataGridView1.Rows[e.RowIndex];
+                DataGridViewCell circuit = selectedRow.Cells[1];
+
+                if (circuit.Value != null)
+                {
+                     circuitul = circuit.Value.ToString();
+                }
+            }
+        }
+
+        private void btnValidare_Click(object sender, EventArgs e)
+        {
+
+            this.form.removepnl("PnlTurist");
+            this.form.Controls.Add(new PnlAutentificarea(this.form));
+
+        }
+
+
+
+        private void cmbTip_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+            if (cmbTip.SelectedItem.ToString().Equals("3 zile"))
+            {
+
+                listCroaziere.Clear();
+                listCroaziere = controllerCroaziere.getCroaziereTip(3);
+                tip = 3;
+
+            }
+            else if (cmbTip.SelectedItem.ToString() == "5 zile")
+            {
+
+                listCroaziere.Clear();
+                listCroaziere = controllerCroaziere.getCroaziereTip(5);
+                tip = 5;
+            }
+            else
+            {
+                listCroaziere.Clear();
+                listCroaziere = controllerCroaziere.getCroaziereTip(8);
+                tip = 8;
+            }
+
+            this.form.removepnl("PnlTurist");
+            this.form.Controls.Add(new PnlTurist(form, listCroaziere));
+        }
+
+        private void dateTimeStart_ValueChanged(object sender, EventArgs e)
+        {
+
+            listCroaziere.Clear();
+            listCroaziere = controllerCroaziere.getCroaziereTipDate(tip, dateTimeStart.Value);
+            dateTimeEnd.Value = dateTimeStart.Value.AddDays(tip);
+
+            dataGridView1.Refresh();
+
+
         }
 
         private void btnBack_Click(object sender, EventArgs e)
