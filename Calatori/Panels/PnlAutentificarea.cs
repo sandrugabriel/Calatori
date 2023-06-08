@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace Calatori.Panels
 {
-    internal class PnlAutentificare:Panel
+    internal class PnlAutentificarea:Panel
     {
 
 
@@ -20,7 +20,7 @@ namespace Calatori.Panels
 
         Form1 form;
 
-        public PnlAutentificare(Form1 form1)
+        public PnlAutentificarea(Form1 form1)
         {
 
             form = form1;
@@ -50,31 +50,31 @@ namespace Calatori.Panels
             this.lblTitlu.Location = new System.Drawing.Point(133, 53);
             this.lblTitlu.Size = new System.Drawing.Size(215, 45);
             this.lblTitlu.Text = "Autentificare";
-             
+
             // lblNume
             this.lblNume.AutoSize = true;
             this.lblNume.Font = new System.Drawing.Font("Microsoft YaHei UI Light", 15.8F);
             this.lblNume.Location = new System.Drawing.Point(86, 183);
             this.lblNume.Size = new System.Drawing.Size(91, 35);
             this.lblNume.Text = "Nume";
-             
+
             // lblParola
             this.lblParola.AutoSize = true;
             this.lblParola.Font = new System.Drawing.Font("Microsoft YaHei UI Light", 15.8F);
             this.lblParola.Location = new System.Drawing.Point(86, 313);
             this.lblParola.Size = new System.Drawing.Size(91, 35);
             this.lblParola.Text = "Parola";
-             
+
             // txtNume
             this.txtNume.Font = new System.Drawing.Font("Microsoft YaHei UI Light", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtNume.Location = new System.Drawing.Point(92, 221);
             this.txtNume.Size = new System.Drawing.Size(298, 38);
-             
+
             // txtParola
             this.txtParola.Font = new System.Drawing.Font("Microsoft YaHei UI Light", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtParola.Location = new System.Drawing.Point(92, 351);
             this.txtParola.Size = new System.Drawing.Size(298, 38);
-             
+
             // btnAutent
             this.btnAutent.Font = new System.Drawing.Font("Microsoft YaHei UI Light", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnAutent.Location = new System.Drawing.Point(151, 455);
@@ -88,7 +88,7 @@ namespace Calatori.Panels
         private void btnAutent_Click(object sender, EventArgs e)
         {
 
-            if((txtNume.Text.Equals("Administrator")&&txtParola.Text.Equals("agentie2015")) || (txtNume.Text.Equals("Turist") &&txtParola.Text.Equals("oti2015")))
+            if ((txtNume.Text.Equals("Administrator") && txtParola.Text.Equals("agentie2015")) || (txtNume.Text.Equals("Turist") && txtParola.Text.Equals("oti2015")))
             {
 
                 this.form.removepnl("pnlAutentificare");
@@ -96,13 +96,12 @@ namespace Calatori.Panels
             }
             else
             {
-                MessageBox.Show("Nu ati introdus numele/parola!","Error",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                MessageBox.Show("Nu ati introdus numele/parola!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 txtParola.Text = "";
                 txtNume.Text = "";
             }
 
         }
-
 
 
     }
