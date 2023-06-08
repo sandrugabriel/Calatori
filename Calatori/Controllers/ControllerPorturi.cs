@@ -99,5 +99,20 @@ namespace Calatori.Controllers
 
             return null;
         }
+        
+        public Port getPortbyName(string s)
+        {
+            List<Port> list = new List<Port>();
+            for (int i = 0; i < porturi.Count; i++)
+            {
+                if (porturi[i].getName().Equals(s))
+                   return porturi[i];
+            }
+
+            return null;
+        }
+
+
+
     }
 }

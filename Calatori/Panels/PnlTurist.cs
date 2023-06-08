@@ -250,6 +250,7 @@ namespace Calatori.Panels
                 if (circuit.Value != null)
                 {
                      circuitul = circuit.Value.ToString();
+                    //MessageBox.Show(circuitul);
                 }
             }
         }
@@ -258,7 +259,7 @@ namespace Calatori.Panels
         {
 
             this.form.removepnl("PnlTurist");
-            this.form.Controls.Add(new PnlAutentificarea(this.form));
+            this.form.Controls.Add(new PnlVizualizare(this.form,circuitul));
 
         }
 

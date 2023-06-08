@@ -22,11 +22,12 @@ namespace Calatori.Panels
         List<Port> listPorturi;
         ControllerCroaziere controllerCroaziere;
         List<Croaziere> listCroaziere;
-
-        public PnlVizualizare(Form1 form1, string circuit)
+        private string circuit;
+        public PnlVizualizare(Form1 form1, string circuit1)
         {
 
             form = form1;
+            circuit = circuit1;
             this.form.Size = new System.Drawing.Size(1362, 800);
             this.form.MaximumSize = new System.Drawing.Size(1362, 800);
             this.form.MinimumSize = new System.Drawing.Size(1362, 800);
@@ -34,9 +35,10 @@ namespace Calatori.Panels
             listPorturi = new List<Port>();
             controllerCroaziere = new ControllerCroaziere();
             listCroaziere = new List<Croaziere>();
-            // PnlListCroaziera
+
+            // PnlVizualizare
             this.Size = new System.Drawing.Size(1362, 800);
-            this.Name = "PnlListCroaziera";
+            this.Name = "PnlVizualizare";
 
             this.pctImg = new System.Windows.Forms.PictureBox();
             this.btnBack = new System.Windows.Forms.Button();
@@ -44,31 +46,46 @@ namespace Calatori.Panels
             this.Controls.Add(this.btnBack);
             this.Controls.Add(this.pctImg);
 
+            listPorturi = getPorturile();
+
             // pctImg
             this.pctImg.Location = new System.Drawing.Point(24, 58);
             this.pctImg.Name = "pctImg";
             this.pctImg.Size = new System.Drawing.Size(1027, 624);
             this.pctImg.SizeMode = PictureBoxSizeMode.StretchImage;
+            this.pctImg.Image = Image.FromFile(Application.StartupPath + @"/imagini/MareaNeagra.jpg");
             this.pctImg.Paint += new PaintEventHandler(pctImg_Paint);
 
             // btnSalvare
-            this.btnBack.Font = new System.Drawing.Font("Microsoft YaHei UI Light", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnBack.Font = new System.Drawing.Font("Microsoft YaHei UI Light", 12F, System.Drawing.FontStyle.Regular);
             this.btnBack.Location = new System.Drawing.Point(1098, 180);
-            this.btnBack.Name = "btnSalvare";
             this.btnBack.Size = new System.Drawing.Size(237, 49);
             this.btnBack.TabIndex = 2;
             this.btnBack.Text = "Inchidere";
             this.btnBack.Click += new EventHandler(btnBack_Click);
-            this.btnBack.Enabled = false;
 
 
         }
 
         private void btnBack_Click(object sender, EventArgs e)
         {
+            this.form.removepnl("PnlVizualizare");
+            this.form.Controls.Add(new PnlAutentificarea(form));
 
 
+        }
 
+        private List<Port> getPorturile()
+        {
+
+            List<Port> ports = new List<Port>();
+
+            string[] prop = circuit.Split(',');
+
+            foreach (string s in prop)
+                ports.Add(controllerPorturi.getPortbyName(s));
+
+            return ports;
         }
 
         private void pctImg_Paint(object sender, PaintEventArgs e)
@@ -76,11 +93,16 @@ namespace Calatori.Panels
 
             Graphics g = e.Graphics;
 
-            foreach (Port port in listPorturi)
+            for (int i = 0; i < listPorturi.Count-2; i++)
             {
-                int x = port.getPozX() - 10;
-                int y = port.getPozY() - 10;
-                g.DrawEllipse(Pens.Red, x, y, 20, 20);
+                int x = listPorturi[i].getPozX();
+                int y = listPorturi[i].getPozY();
+
+               // MessageBox.Show(x.ToString());
+                int x1 = listPorturi[i+1].getPozX();
+                int y1 = listPorturi[i+1].getPozY();
+
+                g.DrawLine(Pens.Red, x, y, x1, y1);
 
             }
 
