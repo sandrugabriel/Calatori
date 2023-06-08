@@ -88,6 +88,16 @@ namespace Calatori.Controllers
 
         }
 
+        public string namebyId(int id)
+        {
 
+            for(int i = 0; i < porturi.Count; i++)
+            {
+                if (porturi[i].getId() == id)
+                    return porturi[i].getName();
+            }
+
+            return null;
+        }
     }
 }

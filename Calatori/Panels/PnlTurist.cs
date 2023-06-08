@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Calatori.Controllers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -28,6 +29,8 @@ namespace Calatori.Panels
         private System.Windows.Forms.DateTimePicker dateTimeStart;
         private System.Windows.Forms.DateTimePicker dateTimeEnd;
         private System.Windows.Forms.Button btnBack;
+
+        
 
         public PnlTurist(Form1 form1) {
 
