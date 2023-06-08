@@ -96,6 +96,9 @@
     <Compile Include="Panels\PnlTurist.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Panels\PnlVizualizare.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">

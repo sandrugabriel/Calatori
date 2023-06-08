@@ -214,6 +214,8 @@ namespace Calatori.Panels
         {
 
             this.form.removepnl("PnlListCroaziera");
+            listCroaziere.Clear();
+            listCroaziere = controllerCroaziere.getCroaziere();
             this.form.Controls.Add(new PnlList(form, listCroaziere));
 
 
