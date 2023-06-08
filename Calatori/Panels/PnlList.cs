@@ -1,4 +1,5 @@
-﻿using Calatori.Models;
+﻿using Calatori.Controllers;
+using Calatori.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,17 +25,28 @@ namespace Calatori.Panels
         private System.Windows.Forms.DataGridViewTextBoxColumn cmbNrPasageri;
         private System.Windows.Forms.Button btnBack;
 
+        
         List<Croaziere> listCroaziere;
+        ControllerCroaziere controllerCroaziere;
+        ControllerPorturi controllerPorturi;
+        string text = null;
 
-        public PnlList(Form1 form1)
+        public PnlList(Form1 form1, List<Croaziere> croazieres)
         {
 
 
             form = form1;
-            listCroaziere = new List<Croaziere>();
+            this.form.Size = new System.Drawing.Size(1328, 891);
+            this.form.MinimumSize = new System.Drawing.Size(1328, 891);
+            this.form.MaximumSize = new System.Drawing.Size(1328, 891);
+
+            controllerCroaziere = new ControllerCroaziere();
+            controllerPorturi = new ControllerPorturi();
+            listCroaziere = controllerCroaziere.getCroaziere();
+
 
             // pnlLista
-            this.ClientSize = new System.Drawing.Size(1128, 691);
+            this.Size = new System.Drawing.Size(1128, 691);
             this.Name = "PnlLista";
 
             this.lblTip = new System.Windows.Forms.Label();
@@ -71,6 +83,7 @@ namespace Calatori.Panels
             this.cmbTip.Items.Add("3 zile");
             this.cmbTip.Items.Add("5 zile");
             this.cmbTip.Items.Add("8 zile");
+            this.cmbTip.SelectedIndexChanged += new EventHandler(cmbTip_SelectedIndexChanged);
              
             // dataGridView1
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -88,6 +101,13 @@ namespace Calatori.Panels
             this.dataGridView1.Size = new System.Drawing.Size(1034, 523);
             this.dataGridView1.TabIndex = 2;
              
+            for(int i = 0; i < listCroaziere.Count; i++)
+            {
+
+                dataGridView1.Rows.Add(listCroaziere[i].getId(), getText(i), listCroaziere[i].getDataStart(), listCroaziere[i].getDataEnd(), listCroaziere[i].getPret(), listCroaziere[i].getNumPasageri());
+
+            }
+
             // cmbId
             this.cmbId.HeaderText = "Id";
             this.cmbId.MinimumWidth = 6;
@@ -142,6 +162,18 @@ namespace Calatori.Panels
 
         }
 
+        public string getText(int k)
+        {
+            string text = null;
+            List<int> list = listCroaziere[k].getListPorturi();
+            for (int i = 0; i < list.Count; i++)
+            {
+                text += controllerPorturi.namebyId(list[i]) + ",";
+            }
+
+            return text;
+        }
+
         private void btnBack_Click(object sender, EventArgs e)
         {
 
@@ -150,6 +182,32 @@ namespace Calatori.Panels
 
         }
 
+        private void cmbTip_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+            if (cmbTip.SelectedItem.ToString().Equals("3 zile")) {
+
+                listCroaziere.Clear();
+                listCroaziere = controllerCroaziere.getCroaziereTip(3);
+
+            }
+            else if (cmbTip.SelectedItem.ToString() == "5 zile")
+            {
+
+                listCroaziere.Clear();
+                listCroaziere = controllerCroaziere.getCroaziereTip(5);
+
+            }
+            else
+            {
+                listCroaziere.Clear();
+                listCroaziere = controllerCroaziere.getCroaziereTip(8);
+
+            }
+
+            this.form.removepnl("PnlLista");
+            this.form.Controls.Add(new PnlList(form, listCroaziere));
+        }
 
 
     }

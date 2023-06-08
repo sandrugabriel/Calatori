@@ -23,6 +23,8 @@ namespace Calatori.Panels
 
         ControllerPorturi controllerPorturi;
         List<Port> listPorturi;
+        ControllerCroaziere controllerCroaziere;
+        List<Croaziere> listCroaziere;
         public PnlListCroaziera(Form1 form1)
         {
 
@@ -32,6 +34,8 @@ namespace Calatori.Panels
             this.form.MinimumSize = new System.Drawing.Size(1362,800);
             controllerPorturi = new ControllerPorturi();
             listPorturi = new List<Port>();
+            controllerCroaziere = new ControllerCroaziere();
+            listCroaziere = new List<Croaziere>();
             // PnlListCroaziera
             this.Size = new System.Drawing.Size(1362, 800);
             this.Name = "PnlListCroaziera";
@@ -82,6 +86,7 @@ namespace Calatori.Panels
             this.btnGenerare.Size = new System.Drawing.Size(237, 49);
             this.btnGenerare.TabIndex = 4;
             this.btnGenerare.Text = "Generare croaziere";
+            this.btnGenerare.Click += new EventHandler(btnGenerare_Click);
             
             // btnListCroaziere
             this.btnListCroaziere.Font = new System.Drawing.Font("Microsoft YaHei UI Light", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -101,14 +106,6 @@ namespace Calatori.Panels
             listPorturi = controllerPorturi.getPorturi();
             this.pctImg.Refresh();
 
-        }
-
-        private void btnListCroaziere_Click(object sender, EventArgs e) {
-
-            this.form.removepnl("PnlListCroaziera");
-            this.form.Controls.Add(new PnlList(form));
-
-        
         }
 
         private int x, y;
@@ -150,6 +147,77 @@ namespace Calatori.Panels
 
         }
 
+        private void btnGenerare_Click(object sender, EventArgs e)
+        {
+
+            Random random = new Random();
+
+
+            string textul;
+
+            for(int i = 0; i < 15; i++)
+            {
+                textul = "";
+                int id = controllerCroaziere.generareId();
+                textul = id.ToString() + ",";
+                Random random1 = new Random();
+                int[] allowedNumbers = { 3, 5, 8 };
+
+                int tip = allowedNumbers[random.Next(allowedNumbers.Length)];
+                textul += tip + ",";
+                if(tip == 3)
+                for (int k = 0; k < 4; k++)
+                {
+                    int rand = random.Next(1,13);
+
+                    textul += rand.ToString() + ",";
+
+                }
+                else if(tip == 5) 
+                    for (int k = 0; k < 7; k++)
+                    {
+                        int rand = random.Next(1, 13);
+
+                        textul += rand.ToString() + ",";
+
+                    }
+                else
+                    for (int k = 0; k < 10; k++)
+                    {
+                        int rand = random.Next(1, 13);
+
+                        textul += rand.ToString() + ",";
+
+                    }
+
+                if (tip == 3)
+                    textul += DateTime.Today.AddDays(2) + "," + DateTime.Today.AddDays(5)+","+1304;
+                else if (tip == 5)
+                    textul += DateTime.Today.AddDays(2) + "," + DateTime.Today.AddDays(7)+","+2800;
+                else
+                    textul += DateTime.Today.AddDays(2) + "," + DateTime.Today.AddDays(10)+","+5100;
+
+                textul += "," + 100;
+
+
+                controllerCroaziere.save(textul);
+            }
+
+
+          
+
+            MessageBox.Show("Croazierele s-sau generat cu succes","Information",MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+        }
+
+        private void btnListCroaziere_Click(object sender, EventArgs e)
+        {
+
+            this.form.removepnl("PnlListCroaziera");
+            this.form.Controls.Add(new PnlList(form, listCroaziere));
+
+
+        }
 
     }
 }
